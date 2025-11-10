@@ -94,6 +94,25 @@ export default function Dashboard() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        // Redirect to home page after logout
+        router.push('/?logged_out=true');
+      } else {
+        console.error('Logout failed');
+        alert('Failed to logout. Please try again.');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      alert('Failed to logout. Please try again.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -134,12 +153,20 @@ export default function Dashboard() {
         {/* Header */}
         <div className="mb-6 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <button
-            onClick={() => router.push('/')}
-            className="text-purple-600 hover:text-purple-800 font-medium"
-          >
-            Connect Another Account
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={handleLogout}
+              className="text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            >
+              Logout
+            </button>
+            <button
+              onClick={() => router.push('/')}
+              className="text-purple-600 hover:text-purple-800 font-medium"
+            >
+              Connect Another Account
+            </button>
+          </div>
         </div>
 
         {/* Profile */}
