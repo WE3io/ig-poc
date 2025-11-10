@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SETUP.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="instagram-graph-api-poc---setup-instructions">Instagram Graph API PoC - Setup Instructions</h1>
+<p>This guide will walk you through setting up the Instagram Graph API integration for this Next.js application.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>A Facebook Developer Account</li>
+<li>A Facebook Business Page</li>
+<li>A Professional Instagram Account (Business or Creator) linked to your Facebook Page</li>
+<li>Node.js 18+ installed</li>
+</ul>
+<h2 id="step-1-create-a-facebook-app">Step 1: Create a Facebook App</h2>
+<ol>
+<li>Go to <a href="https://developers.facebook.com/">Meta for Developers</a></li>
+<li>Sign in with your Facebook account</li>
+<li>Click <strong>&quot;My Apps&quot;</strong> in the top right, then <strong>&quot;Create App&quot;</strong></li>
+<li>Select <strong>&quot;Business&quot;</strong> as the app type and click <strong>&quot;Next&quot;</strong></li>
+<li>Fill in the required information:
+<ul>
+<li><strong>App Name</strong>: Choose a name (e.g., &quot;Instagram Graph API PoC&quot;)</li>
+<li><strong>App Contact Email</strong>: Your email address</li>
+</ul>
+</li>
+<li>Click <strong>&quot;Create App&quot;</strong></li>
+</ol>
+<h2 id="step-2-add-products-to-your-app">Step 2: Add Products to Your App</h2>
+<ol>
+<li>In your app dashboard, go to <strong>&quot;Add Products&quot;</strong> or find the <strong>&quot;Products&quot;</strong> section</li>
+<li>Add the following products:
+<ul>
+<li><strong>Facebook Login</strong>: Click &quot;Set Up&quot;</li>
+<li><strong>Instagram Graph API</strong>: Click &quot;Set Up&quot;</li>
+<li><strong>Pages API</strong>: Usually added automatically with Facebook Login</li>
+</ul>
+</li>
+</ol>
+<h2 id="step-3-configure-facebook-login">Step 3: Configure Facebook Login</h2>
+<ol>
+<li>In the left sidebar, navigate to <strong>&quot;Facebook Login&quot; &gt; &quot;Settings&quot;</strong></li>
+<li>Enable the following:
+<ul>
+<li>✅ <strong>Client OAuth Login</strong></li>
+<li>✅ <strong>Web OAuth Login</strong></li>
+</ul>
+</li>
+<li>Add your <strong>Valid OAuth Redirect URIs</strong>:
+<ul>
+<li>For local development: <code>http://localhost:3000/api/auth/callback</code></li>
+<li>For production: <code>https://yourdomain.com/api/auth/callback</code></li>
+</ul>
+</li>
+<li>Click <strong>&quot;Save Changes&quot;</strong></li>
+</ol>
+<h2 id="step-4-request-required-permissions">Step 4: Request Required Permissions</h2>
+<ol>
+<li>Navigate to <strong>&quot;App Review&quot; &gt; &quot;Permissions and Features&quot;</strong></li>
+<li>Request the following permissions:
+<ul>
+<li><code>instagram_basic</code> - Access basic Instagram profile information</li>
+<li><code>pages_show_list</code> - See the list of Pages you manage</li>
+<li><code>pages_read_engagement</code> - Read engagement data for Pages you manage</li>
+</ul>
+</li>
+</ol>
+<h3 id="note-on-app-review">Note on App Review</h3>
+<p>For production use, you'll need to submit your app for review with these permissions. However, for development/testing:</p>
+<ul>
+<li>If you're the admin of the app, you can use it with your own account immediately</li>
+<li>For testing with other users, add them as <strong>Test Users</strong> or <strong>Administrators</strong> in <strong>&quot;Roles&quot; &gt; &quot;People&quot;</strong></li>
+</ul>
+<h2 id="step-5-link-instagram-account-to-facebook-page">Step 5: Link Instagram Account to Facebook Page</h2>
+<p>Before using this app, ensure your Instagram account is properly linked:</p>
+<ol>
+<li>Go to your <strong>Facebook Page</strong> (must be a Business Page)</li>
+<li>Navigate to <strong>Settings</strong> &gt; <strong>Linked Accounts</strong> (or <strong>Instagram</strong> section)</li>
+<li>Connect your Instagram Business or Creator account</li>
+<li>Make sure you're an admin of both the Page and the Instagram account</li>
+</ol>
+<h2 id="step-6-get-your-app-credentials">Step 6: Get Your App Credentials</h2>
+<ol>
+<li>In your app dashboard, go to <strong>&quot;Settings&quot; &gt; &quot;Basic&quot;</strong></li>
+<li>Note down the following:
+<ul>
+<li><strong>App ID</strong>: Your Facebook App ID</li>
+<li><strong>App Secret</strong>: Click &quot;Show&quot; next to App Secret to reveal it</li>
+</ul>
+</li>
+</ol>
+<h2 id="step-7-configure-environment-variables">Step 7: Configure Environment Variables</h2>
+<ol>
+<li>Copy <code>.env.local.example</code> to <code>.env.local</code> (if it exists, or create one)</li>
+<li>Create a <code>.env.local</code> file in the root of your project with the following:</li>
+</ol>
+<pre class="hljs"><code><div>FACEBOOK_APP_ID=your_facebook_app_id_here
+FACEBOOK_APP_SECRET=your_facebook_app_secret_here
+
+NEXT_PUBLIC_REDIRECT_URI=http://localhost:3000/api/auth/callback
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+</div></code></pre>
+<ol start="3">
+<li>Replace the placeholder values with your actual App ID and App Secret</li>
+<li>For production, update the URLs to match your domain</li>
+</ol>
+<h2 id="step-8-install-dependencies-and-run">Step 8: Install Dependencies and Run</h2>
+<pre class="hljs"><code><div><span class="hljs-comment"># Install dependencies (if not already done)</span>
+npm install
+
+<span class="hljs-comment"># Run the development server</span>
+npm run dev
+</div></code></pre>
+<ol start="5">
+<li>Open <a href="http://localhost:3000">http://localhost:3000</a> in your browser</li>
+<li>Click &quot;Connect Instagram&quot; to test the integration</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="%22no-instagram-business-account-found%22">&quot;No Instagram Business Account found&quot;</h3>
+<ul>
+<li>Ensure your Instagram account is a <strong>Business</strong> or <strong>Creator</strong> account</li>
+<li>Verify the account is linked to your Facebook Page</li>
+<li>Make sure you have admin access to both the Page and Instagram account</li>
+</ul>
+<h3 id="oauth-redirect-uri-mismatch">OAuth Redirect URI Mismatch</h3>
+<ul>
+<li>Verify the redirect URI in your <code>.env.local</code> matches exactly with what you configured in Facebook App settings</li>
+<li>Check for trailing slashes or protocol differences (http vs https)</li>
+</ul>
+<h3 id="%22invalid-app-id%22-or-authentication-errors">&quot;Invalid App ID&quot; or Authentication Errors</h3>
+<ul>
+<li>Double-check your <code>FACEBOOK_APP_ID</code> and <code>FACEBOOK_APP_SECRET</code> in <code>.env.local</code></li>
+<li>Ensure you've restarted the Next.js dev server after changing environment variables</li>
+<li>Verify the app is in &quot;Development&quot; mode (if testing) and you're added as a user</li>
+</ul>
+<h3 id="token-expiration">Token Expiration</h3>
+<p>Access tokens typically expire after 60 days. The app stores the token in cookies. If you encounter authentication errors, you may need to reconnect your account.</p>
+<h2 id="api-endpoints-used">API Endpoints Used</h2>
+<p>The app uses the following Instagram Graph API endpoints:</p>
+<ul>
+<li><code>GET /me/accounts</code> - Get user's Facebook Pages</li>
+<li><code>GET /{page-id}</code> - Get Instagram Business Account linked to a Page</li>
+<li><code>GET /{ig-user-id}</code> - Get Instagram profile information</li>
+<li><code>GET /{ig-user-id}/media</code> - Get Instagram media (posts)</li>
+</ul>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><a href="https://developers.facebook.com/docs/instagram-api/">Instagram Graph API Documentation</a></li>
+<li><a href="https://developers.facebook.com/docs/facebook-login/">Facebook Login Documentation</a></li>
+<li><a href="https://developers.facebook.com/">Meta for Developers Portal</a></li>
+</ul>
+
+</body>
+</html>
