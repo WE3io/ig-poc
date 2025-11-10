@@ -30,6 +30,16 @@ export interface InstagramMedia {
   thumbnail_url?: string;
 }
 
+export interface InstagramStory {
+  id: string;
+  caption?: string;
+  media_type: 'IMAGE' | 'VIDEO';
+  media_url?: string;
+  permalink: string;
+  thumbnail_url?: string;
+  timestamp?: string;
+}
+
 /**
  * Fetches the user's Facebook Pages
  */
@@ -105,6 +115,51 @@ export async function getInstagramMedia(
 
   const data = await response.json();
   return data.data || [];
+}
+
+/**
+ * Fetches Instagram Stories
+ */
+export async function getInstagramStories(
+  igUserId: string,
+  accessToken: string
+): Promise<InstagramStory[]> {
+  // First, get the list of story IDs
+  const storiesResponse = await fetch(
+    `${GRAPH_API_BASE}/${igUserId}/stories?access_token=${accessToken}`
+  );
+
+  if (!storiesResponse.ok) {
+    const error = await storiesResponse.json();
+    throw new Error(error.error?.message || 'Failed to fetch Instagram stories');
+  }
+
+  const storiesData = await storiesResponse.json();
+  const storyIds = storiesData.data || [];
+
+  if (storyIds.length === 0) {
+    return [];
+  }
+
+  // Fetch details for each story
+  // The stories endpoint returns IDs, so we need to fetch each story's details
+  const storyDetails = await Promise.all(
+    storyIds.map(async (story: { id: string }) => {
+      const detailResponse = await fetch(
+        `${GRAPH_API_BASE}/${story.id}?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${accessToken}`
+      );
+
+      if (!detailResponse.ok) {
+        // If a story is no longer available (expired), skip it
+        return null;
+      }
+
+      return await detailResponse.json();
+    })
+  );
+
+  // Filter out null values (expired stories)
+  return storyDetails.filter((story): story is InstagramStory => story !== null);
 }
 
 /**

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProfileCard from '../components/ProfileCard';
 import MediaGallery from '../components/MediaGallery';
+import StoriesGallery from '../components/StoriesGallery';
 
 interface Profile {
   name: string;
@@ -25,10 +26,21 @@ interface MediaItem {
   thumbnail_url?: string;
 }
 
+interface StoryItem {
+  id: string;
+  caption?: string;
+  media_type: 'IMAGE' | 'VIDEO';
+  media_url?: string;
+  permalink: string;
+  thumbnail_url?: string;
+  timestamp?: string;
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [media, setMedia] = useState<MediaItem[]>([]);
+  const [stories, setStories] = useState<StoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -62,6 +74,18 @@ export default function Dashboard() {
       }
       const mediaData = await mediaResponse.json();
       setMedia(mediaData);
+
+      // Fetch stories (non-blocking - stories may not be available)
+      try {
+        const storiesResponse = await fetch('/api/stories');
+        if (storiesResponse.ok) {
+          const storiesData = await storiesResponse.json();
+          setStories(storiesData);
+        }
+        // Silently fail if stories are not available (they expire after 24 hours)
+      } catch (storiesErr) {
+        console.warn('Failed to fetch stories:', storiesErr);
+      }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
       console.error('Dashboard error:', err);
@@ -120,6 +144,13 @@ export default function Dashboard() {
 
         {/* Profile */}
         {profile && <ProfileCard profile={profile} />}
+
+        {/* Stories Gallery */}
+        {stories.length > 0 && (
+          <div className="mb-8">
+            <StoriesGallery stories={stories} />
+          </div>
+        )}
 
         {/* Media Gallery */}
         <MediaGallery media={media} />
